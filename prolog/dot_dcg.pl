@@ -30,9 +30,8 @@ stmt_list([Stmt|Rest]) --> stmt(Stmt), w_spc_opt, stmt_list(Rest), !.
 
 
 % DOT Spec: stmt : node_stmt | edge_stmt | attr_stmt | ID '=' ID | subgraph
-% TODO: subgraph not implemented
 % TODO: attr_stmt
-% TODO: ID =' ID
+% TODO: ID '=' ID
 stmt(EdgeStmt) --> edge_stmt(EdgeStmt), w_spc_opt, ";", !.
 stmt(EdgeStmt) --> edge_stmt(EdgeStmt), !.
 stmt(NodeStmt) --> node_stmt(NodeStmt), w_spc_opt, ";", !.
@@ -53,7 +52,7 @@ attr_list(Merged) -->
         w_spc_opt, attr_list(Rest).
 
 
-                                % DOT Spec:  a_list : ID '=' ID [ (';' | ',') ] [ a_list ]
+% DOT Spec:  a_list : ID '=' ID [ (';' | ',') ] [ a_list ]
 a_list([]) --> [].
 a_list([Attr]) -->
         attr(Attr), !.
