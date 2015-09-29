@@ -87,14 +87,14 @@ test(node_stmt_with_attributes) :-
 
 % Edges
 test(edge_stmt_plain_pair) :-
-    test_codes_match(edge([node0,node1]), dot_dcg:edge_stmt, 'node0 -> node1').
+    test_codes_match(edge_stmt([node0,node1]), dot_dcg:edge_stmt, 'node0 -> node1').
 
 test(edge_stmt_plain_triple) :-
-    test_codes_match(edge([node0,node1,node2]), dot_dcg:edge_stmt,
+    test_codes_match(edge_stmt([node0,node1,node2]), dot_dcg:edge_stmt,
                      'node0 -> node1 -> node2').
 
 test(edge_stmt_with_attributes) :-
-    test_codes_match(edge([node0,node1],[attr(foo,bar)]), dot_dcg:edge_stmt,
+    test_codes_match(edge_stmt([node0,node1],[attr(foo,bar)]), dot_dcg:edge_stmt,
                      'node0 -> node1 [foo=bar]').
 
 % Statements and lists
@@ -104,7 +104,7 @@ test(stmt_list_nodes_spcs) :-
                      dot_dcg:stmt_list, 'n0 n1  n2').
 
 test(stmt_list_edges_spcs) :-
-    test_codes_match([edge([n0,n1],[attr(foo,bar)]),edge([n2,n3])],
+    test_codes_match([edge_stmt([n0,n1],[attr(foo,bar)]),edge_stmt([n2,n3])],
                      dot_dcg:stmt_list, 'n0 -> n1 [foo=bar] n2 -> n3').
 
 test(stmt_list_nodes_semicolons) :-
@@ -113,7 +113,7 @@ test(stmt_list_nodes_semicolons) :-
                      dot_dcg:stmt_list, 'n0;n1 ; n2').
 
 test(stmt_list_edges_semicolons) :-
-    test_codes_match([edge([n0,n1],[attr(foo,bar)]),edge([n2,n3])],
+    test_codes_match([edge_stmt([n0,n1],[attr(foo,bar)]),edge_stmt([n2,n3])],
                      dot_dcg:stmt_list, 'n0 -> n1 [foo=bar]; n2 -> n3').
 
 
