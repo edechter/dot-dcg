@@ -107,32 +107,49 @@ subgraph(subgraph(SubGraphId, StmtList)) -->
 % DOT Spec: compass_pt : (n | ne | e | se | s | sw | w | nw | c | _)
 % TODO
 
+id_elem(C) -->
+        [C],
+        {code_type(C, alnum)
+        ;
+         atom_codes('_', [C])
+        }.
+
 % DOT Spec: An ID is one of the following:
 % DOT Spec: Any string of alphabetic ([a-zA-Z\200-\377]) characters, underscores
-% ('_') or digits ([0-9]), not beginning with a digit;
-id(AId) --> {atom(AId), atom_codes(AId, Id) }, symbol_list(Id).
-
-% DOT Spec: a numeral [-]?(.[0-9]+ | [0-9]+(.[0-9]*)? );
-id(Id) --> numeral(Id), !.
-
+                                % ('_') or digits ([0-9]), not beginning with a digit;
+                                % DOT Spec: a numeral [-]?(.[0-9]+ | [0-9]+(.[0-9]*)? );
 % DOT Spec: any double-quoted string ("...") possibly containing escaped quotes (\");
-id(Id) --> quoted_string(Id).
+
+id(Number) -->
+        {number(Number)},
+        !,
+        number(Number).
+id(AId) -->
+        % if atomic, then translate to codes and recurse
+        {atomic(AId), atom_codes(AId, Id)},
+        !,
+        id(Id).
+
+id([C|Cs]) -->
+        \+ digit(D),
+        id_([C|Cs]).
+
+id(Cs) -->
+       quoted_string_body(Cs, false, false).
+
+
+
+id_([C]) --> id_elem(C).
+id_([C|Cs]) --> id_elem(C), id_(Cs).
+
+
+
+
+% id(Id) --> quoted_string(Id).
 
 % DOT Spec: an HTML string (<...>).
 % TODO
 
-% Check for list of 'csym' chars, which is a close approximation to DOT standard
-% TODO: Tighten up
-symbol_list([S|Rest]) --> symbol(S), symbol_list(Rest).
-symbol_list([S]) --> symbol(S).
-symbol(S) --> [S], { char_type(S, csym) }.
-
-% Integer or float. 
-numeral(Id) -->
-        {number(Id),
-         atom_number(A, Id), 
-         atom_codes(A, Codes)},
-        Codes. 
 
 
 % Quoted string
