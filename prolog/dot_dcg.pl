@@ -1,3 +1,5 @@
+
+
 :- module(dot_dcg, [dot/3]).
 
 % Subset of the dot language grammar. See www.graphviz.org/doc/info/lang.html
@@ -21,10 +23,11 @@ dot(digraph(Name, StmtList)) -->
         "{", w_spc, stmt_list(StmtList), w_spc, "}",
         w_spc_opt.
 
-% DOT Spec: stmt_list :	[ stmt [ ';' ] [ stmt_list ] ]
+% DOT Spec: stmt_list : [ stmt [ ';' ] [ stmt_list ] ]
+stmt_list([]) --> [].
 stmt_list([Stmt]) --> stmt(Stmt), !.
 stmt_list([Stmt|Rest]) --> stmt(Stmt), w_spc_opt, stmt_list(Rest), !.
-stmt_list([]) --> [].
+
 
 % DOT Spec: stmt : node_stmt | edge_stmt | attr_stmt | ID '=' ID | subgraph
 % TODO: subgraph not implemented
