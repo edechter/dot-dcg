@@ -1,4 +1,4 @@
-:- module(dot_dcg, [graph/3]).
+:- module(dot_dcg, [dot/3]).
 
 % Subset of the dot language grammar. See www.graphviz.org/doc/info/lang.html
 % Comments prefixed "DOT Spec" are taken verbatim from the specification.
@@ -14,8 +14,12 @@
 % DOT Spec: graph : [ strict ] (graph | digraph) [ ID ] '{' stmt_list '}'
 % TODO: Support strict
 % TODO: Support un-directed graph
-graph(digraph(Name, StmtList)) --> w_spc_opt, "digraph", w_spc, id(Name), w_spc,
-    "{", w_spc, stmt_list(StmtList), w_spc, "}", w_spc_opt.
+dot(digraph(Name, StmtList)) -->
+        w_spc_opt, "digraph", w_spc,
+        id(Name),
+        w_spc,
+        "{", w_spc, stmt_list(StmtList), w_spc, "}",
+        w_spc_opt.
 
 % DOT Spec: stmt_list :	[ stmt [ ';' ] [ stmt_list ] ]
 stmt_list([Stmt|Rest]) --> stmt(Stmt), w_spc_opt, stmt_list(Rest), !.
