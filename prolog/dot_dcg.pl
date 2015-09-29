@@ -108,13 +108,13 @@ subgraph(subgraph(SubGraphId, StmtList)) -->
 % DOT Spec: An ID is one of the following:
 % DOT Spec: Any string of alphabetic ([a-zA-Z\200-\377]) characters, underscores
 % ('_') or digits ([0-9]), not beginning with a digit;
-id(AId) --> symbol_list(Id), { atom_codes(AId, Id) }, !.
+id(AId) --> {atom(AId), atom_codes(AId, Id) }, symbol_list(Id).
 
 % DOT Spec: a numeral [-]?(.[0-9]+ | [0-9]+(.[0-9]*)? );
 id(Id) --> numeral(Id), !.
 
 % DOT Spec: any double-quoted string ("...") possibly containing escaped quotes (\");
-id(Id) --> quoted_string(Id), !.
+id(Id) --> quoted_string(Id).
 
 % DOT Spec: an HTML string (<...>).
 % TODO
