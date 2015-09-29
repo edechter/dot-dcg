@@ -34,6 +34,8 @@ stmt(EdgeStmt) --> edge_stmt(EdgeStmt), w_spc_opt, ";", !.
 stmt(EdgeStmt) --> edge_stmt(EdgeStmt), !.
 stmt(NodeStmt) --> node_stmt(NodeStmt), w_spc_opt, ";", !.
 stmt(NodeStmt) --> node_stmt(NodeStmt).
+stmt(SubGraph) --> subgraph(SubGraph), w_spc_opt, ";".
+stmt(SubGraph) --> subgraph(SubGraph).
 
 % DOT Spec: attr_stmt :	(graph | node | edge) attr_list
 % TODO
@@ -73,6 +75,11 @@ node_id(NodeId) --> id(NodeId).
 
 % DOT Spec: port: ':' ID [ ':' compass_pt ] | ':' compass_pt
 % DOT Spec: subgraph : [ subgraph [ ID ] ] '{' stmt_list '}'
+subgraph(subgraph(SubGraphId, StmtList)) -->
+        id(SubGraphId),
+        w_spc,
+        "{", stmt_list(StmtList), "}".
+
 % DOT Spec: compass_pt : (n | ne | e | se | s | sw | w | nw | c | _)
 % TODO
 
