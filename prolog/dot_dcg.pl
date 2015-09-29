@@ -125,10 +125,13 @@ symbol_list([S|Rest]) --> symbol(S), symbol_list(Rest).
 symbol_list([S]) --> symbol(S).
 symbol(S) --> [S], { char_type(S, csym) }.
 
-% This uses ISO Prolog standard for conversion, which is assumed to be adequate
-% TODO: Tighten up
-numeral(Id, Codes, _Rest) :-
-    catch(number_codes(Id, Codes), _Ex, fail).
+% Integer or float. 
+numeral(Id) -->
+        {number(Id),
+         atom_number(A, Id), 
+         atom_codes(A, Codes)},
+        Codes. 
+
 
 % Quoted string
 quoted_string(AString) --> quoted_string_body(String, false, false),
