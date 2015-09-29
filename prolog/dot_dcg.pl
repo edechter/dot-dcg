@@ -39,30 +39,52 @@ stmt(SubGraph) --> subgraph(SubGraph).
 
 % DOT Spec: attr_stmt :	(graph | node | edge) attr_list
 % TODO
-
+        
 % DOT Spec: attr_list : '[' [ a_list ] ']' [ attr_list ]
-attr_list(Merged) --> "[", w_spc_opt, a_list(AList), w_spc_opt, "]",
-    w_spc_opt, attr_list(Rest), { merge(AList, Rest, Merged) }, !.
-attr_list(AList) --> "[", w_spc_opt, a_list(AList), w_spc_opt, "]".
+attr_list(AList) -->
+        "[", w_spc_opt, a_list(AList), w_spc_opt, "]",
+        !.
+attr_list(Merged) -->
+        { merge(AList, Rest, Merged) }, 
+        "[", w_spc_opt, a_list(AList), w_spc_opt, "]",
+        w_spc_opt, attr_list(Rest).
 
-% DOT Spec: a_list : ID [ '=' ID ] [ ',' ] [ a_list ]
-a_list([Attr|Rest]) --> attr(Attr), w_spc_opt, ",", w_spc_opt, a_list(Rest), !.
-a_list([Attr]) --> attr(Attr).
+
+                                % DOT Spec:  a_list : ID '=' ID [ (';' | ',') ] [ a_list ]
+a_list([]) --> [].
+a_list([Attr]) -->
+        attr(Attr), !.
+a_list([Attr|Rest]) -->
+        attr(Attr),
+        w_spc_opt,
+        ("," ; ";"),
+        w_spc_opt,
+        a_list(Rest), !.
+
+
 attr(attr(Name, Value)) --> id(Name), w_spc_opt, "=", w_spc_opt, id(Value), !.
 attr(attr(Name)) --> id(Name).            
 
 % DOT Spec: edge_stmt : (node_id | subgraph) edgeRHS [ attr_list ]
 % TODO: Subgraph
-edge_stmt(edge(Nodes, AttrList)) --> edge(Nodes), w_spc_opt, attr_list(AttrList), !.
-edge_stmt(edge(Nodes)) --> edge(Nodes).
+edge_stmt(edge_stmt(Nodes, AttrList)) --> edge(Nodes), w_spc_opt, attr_list(AttrList), !.
+edge_stmt(edge_stmt(Nodes)) --> edge(Nodes).
+
 edge([First|Rest]) --> node_id(First), w_spc_opt, edge_rhs(Rest).
 
 % DOT Spec: edgeRHS : edgeop (node_id | subgraph) [ edgeRHS ]
 % TODO: Subgraph
-% TODO: Edge type
-edge_rhs([Node|Rest]) --> edge_op, w_spc_opt, node_id(Node),
-    w_spc_opt, edge_rhs(Rest), !.
-edge_rhs([Node]) --> edge_op, w_spc_opt, node_id(Node).
+                                % TODO: Edge type
+
+edge_rhs([]) --> [].
+edge_rhs([Node|Rest]) -->
+        edge_op,
+        w_spc_opt,
+        node_id(Node),
+        w_spc_opt,
+        edge_rhs(Rest).
+% edge_rhs([Node]) --> edge_op, w_spc_opt, node_id(Node).
+
 
 % DOT Spec: node_stmt : node_id [ attr_list ]
 node_stmt(node_stmt(NodeId, AttrList)) --> node_id(NodeId), w_spc, attr_list(AttrList).
