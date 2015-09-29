@@ -134,8 +134,9 @@ numeral(Id) -->
 
 
 % Quoted string
-quoted_string(AString) --> quoted_string_body(String, false, false),
-    { atom_codes(AString, String) }, !.
+quoted_string(AString) -->
+        { atom(AString), atom_codes(AString, String) },
+        quoted_string_body(String, false, false).
 
 quoted_string_body([34|String], false, false, [34|Codes], Rest):-
     % First character is a quote
@@ -163,13 +164,14 @@ quoted_string_body([34], true, false, [34|Codes], Rest) :-
 edge_op --> "-", ">".
 
 % Mandatory white space
-w_spc --> w_spc_char, w_spc, !.
-w_spc --> w_spc_char, !.
-w_spc_char --> [10]; [11]; [12]; [13]; [32].
+w_spc --> w_spc_char.
+w_spc --> w_spc_char, w_spc.
+
+w_spc_char --> [32]; [10]; [11]; [12]; [13].
 
 % Optional white space
-w_spc_opt --> w_spc, !.
 w_spc_opt --> [].
+w_spc_opt --> w_spc.
 
 % Utility predicate for merging one list into another
 merge([], Ys, Ys).
