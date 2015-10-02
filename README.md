@@ -36,7 +36,7 @@ Dot = digraph("mygraph", [node_stmt("node1"), node_stmt("node2", [attr("label", 
 * Generate DOT graph from DSL expression:
 ```prolog
 
-?- dot(digraph("mygraph", [edge_stmt(["node1", "node3"]), node*stmt("node2", [attr("label", "\"My node\"")]), edge*stmt(["node1", "node2"])]), X, []),
+?- dot(digraph("mygraph", [edge_stmt(["node1", "node3"]), node_stmt("node2", [attr("label", "\"My node\"")]), edge_stmt(["node1", "node2"])]), X, []),
        format(X).
 digraph mygraph {node1->node3;node2 [label="My node"];node1->node2}
 
