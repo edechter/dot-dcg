@@ -86,7 +86,10 @@ edge([First|Rest]) --> node_id(First), w_spc_opt, edge_rhs(Rest).
 % TODO: Subgraph
                                 % TODO: Edge type
 
-edge_rhs([]) --> [].
+edge_rhs([Node]) -->
+        edge_op,
+        w_spc_opt,
+        node_id(Node).
 edge_rhs([Node|Rest]) -->
         edge_op,
         w_spc_opt,
