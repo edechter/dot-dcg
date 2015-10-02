@@ -22,24 +22,26 @@ dot(digraph(Name, StmtList)) -->
         w_spc_opt, "digraph", w_spc,
         id(Name),
         w_spc,
-        "{", w_spc, stmt_list(StmtList), w_spc, "}",
+        "{", w_spc_opt, stmt_list(StmtList), w_spc_opt, "}",
         w_spc_opt.
 
 % DOT Spec: stmt_list : [ stmt [ ';' ] [ stmt_list ] ]
 stmt_list([]) --> [].
-stmt_list([Stmt]) --> stmt(Stmt), !.
-stmt_list([Stmt|Rest]) --> stmt(Stmt), w_spc_opt, stmt_list(Rest), !.
+stmt_list([Stmt]) --> stmt(Stmt).
+stmt_list([Stmt]) --> stmt(Stmt), w_spc_opt, ";".
+stmt_list([Stmt|Rest]) --> stmt(Stmt), w_spc_opt, ";", w_spc_opt, stmt_list(Rest).
+% stmt_list([Stmt|Rest]) --> stmt(Stmt), w_spc_opt, stmt_list(Rest).
 
 
 % DOT Spec: stmt : node_stmt | edge_stmt | attr_stmt | ID '=' ID | subgraph
 % TODO: attr_stmt
-% TODO: ID '=' ID
-stmt(EdgeStmt) --> edge_stmt(EdgeStmt), w_spc_opt, ";", !.
-stmt(EdgeStmt) --> edge_stmt(EdgeStmt), !.
-stmt(NodeStmt) --> node_stmt(NodeStmt), w_spc_opt, ";", !.
+                                % TODO: ID '=' ID
+stmt(EdgeStmt) --> edge_stmt(EdgeStmt).
+% stmt(EdgeStmt) --> edge_stmt(EdgeStmt), w_spc_opt, ";".
 stmt(NodeStmt) --> node_stmt(NodeStmt).
-stmt(SubGraph) --> subgraph(SubGraph), w_spc_opt, ";".
+% stmt(NodeStmt) --> node_stmt(NodeStmt), w_spc_opt, ";".
 stmt(SubGraph) --> subgraph(SubGraph).
+% stmt(SubGraph) --> subgraph(SubGraph), w_spc_opt, ";".
 
 % DOT Spec: attr_stmt :	(graph | node | edge) attr_list
 % TODO
