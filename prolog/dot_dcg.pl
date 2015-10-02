@@ -2,6 +2,8 @@
 
 :- module(dot_dcg, [dot/3]).
 
+:- use_module(library(dcg/basics)).
+
 % Subset of the dot language grammar. See www.graphviz.org/doc/info/lang.html
 % Comments prefixed "DOT Spec" are taken verbatim from the specification.
 
@@ -131,8 +133,9 @@ id(AId) -->
         id(Id).
 
 id([C|Cs]) -->
-        \+ digit(D),
-        id_([C|Cs]).
+        id_elem(C),
+        {\+ digit(C, [C], [])},
+        id_(Cs).
 
 id(Cs) -->
        quoted_string_body(Cs, false, false).
