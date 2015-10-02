@@ -76,8 +76,9 @@ attr(attr(Name)) --> id(Name).
 
 % DOT Spec: edge_stmt : (node_id | subgraph) edgeRHS [ attr_list ]
 % TODO: Subgraph
-edge_stmt(edge_stmt(Nodes, AttrList)) --> edge(Nodes), w_spc_opt, attr_list(AttrList), !.
 edge_stmt(edge_stmt(Nodes)) --> edge(Nodes).
+edge_stmt(edge_stmt(Nodes, AttrList)) --> edge(Nodes), w_spc_opt, attr_list(AttrList), !.
+
 
 edge([First|Rest]) --> node_id(First), w_spc_opt, edge_rhs(Rest).
 
