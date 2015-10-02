@@ -51,9 +51,12 @@ attr_list(AList) -->
         "[", w_spc_opt, a_list(AList), w_spc_opt, "]",
         !.
 attr_list(Merged) -->
+        "[", w_spc_opt, 
         { merge(AList, Rest, Merged) }, 
-        "[", w_spc_opt, a_list(AList), w_spc_opt, "]",
-        w_spc_opt, attr_list(Rest).
+        a_list(AList),
+        w_spc_opt, "]",
+        w_spc_opt,
+        attr_list(Rest).
 
 
 % DOT Spec:  a_list : ID '=' ID [ (';' | ',') ] [ a_list ]
